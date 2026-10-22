@@ -11,8 +11,8 @@ const config = createTamagui({
 
   variables: {
     primary: '#07599C',
-    pink: '#F6B3BB',
-    yellow: '#F7B844',
+    pink: '#f99ea6',
+    yellow: '#fcb31f',
     green: '#97A58A',
     surface: '#FFFFFF',
   },

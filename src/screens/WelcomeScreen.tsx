@@ -1,17 +1,17 @@
-import { Image, useWindowDimensions } from "react-native";
-import { Text, XStack, YStack } from "tamagui";
+import { Image, Pressable } from "react-native";
+import { Text, useTheme, XStack, YStack } from "tamagui";
 
 import { DecorativeShape } from "../components/DecorativeShape";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../navigation/types";
+import { useScreenLayout } from "../hooks/useScreenLayout";
 
-export function WelcomeScreen() {
-  const { width, height } = useWindowDimensions();
+type Props = NativeStackScreenProps<RootStackParamList, "Welcome">;
 
-  const screenWidth = Math.min(width, 480);
-  const screenHeight = height;
-  const compact = screenHeight < 700;
+export function WelcomeScreen({ navigation }: Props) {
+  const { screenWidth, screenHeight, compact } = useScreenLayout();
 
   const logoWidth = Math.min(screenWidth * 0.94, screenHeight * 0.44);
-
   const catWidth = Math.min(screenWidth * 0.96, screenHeight * 0.46);
 
   const blueWidth = Math.max(
@@ -110,19 +110,25 @@ export function WelcomeScreen() {
           }}
         />
 
-        <YStack
-          position="absolute"
-          bottom={screenHeight * 0.105}
-          left={screenWidth * 0.08}
-          right={screenWidth * 0.08}
-          height={compact ? 52 : 62}
-          borderRadius={32}
-          backgroundColor="background"
-          alignItems="center"
-          justifyContent="center"
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Começar apresentação"
+          onPress={() => navigation.navigate("Onboarding")}
+          style={({ pressed }) => ({
+            position: "absolute",
+            bottom: screenHeight * 0.102,
+            left: screenWidth * 0.08,
+            right: screenWidth * 0.08,
+            height: compact ? 52 : 62,
+            borderRadius: 32,
+            backgroundColor: "#FFF7E7",
+            alignItems: "center",
+            justifyContent: "center",
+            opacity: pressed ? 0.8 : 1,
+          })}
         >
           <Text
-            fontSize={compact ? 20 : 22}
+            fontSize={20}
             lineHeight="28px"
             fontWeight="700"
             color="primary"
@@ -139,34 +145,7 @@ export function WelcomeScreen() {
           >
             →
           </Text>
-        </YStack>
-
-        <XStack
-          position="absolute"
-          bottom={screenHeight * 0.045}
-          left={16}
-          right={16}
-          justifyContent="center"
-          alignItems="center"
-          gap={8}
-        >
-          <Text
-            fontSize={compact ? 14 : 16}
-            lineHeight="24px"
-            color="background"
-          >
-            Já tem uma conta?
-          </Text>
-
-          <Text
-            fontSize={compact ? 14 : 16}
-            lineHeight="24px"
-            fontWeight="700"
-            color="background"
-          >
-            Entrar
-          </Text>
-        </XStack>
+        </Pressable>
       </YStack>
     </YStack>
   );
