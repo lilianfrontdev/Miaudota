@@ -1,9 +1,10 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import { WelcomeScreen } from '../screens/WelcomeScreen';
-import { OnboardingScreen } from '../screens/OnboardingScreen';
-import type { RootStackParamList } from './types';
+import { WelcomeScreen } from "../screens/WelcomeScreen";
+import { OnboardingScreen } from "../screens/OnboardingScreen";
+import type { RootStackParamList } from "./types";
+import { RoleScreen } from "../screens/RoleScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -15,19 +16,13 @@ export function RootNavigator() {
         screenOptions={{
           headerShown: false,
           contentStyle: {
-            backgroundColor: '#FFF7E7',
+            backgroundColor: "#FFF7E7",
           },
         }}
       >
-        <Stack.Screen
-          name="Welcome"
-          component={WelcomeScreen}
-        />
-
-        <Stack.Screen
-          name="Onboarding"
-          component={OnboardingScreen}
-        />
+        <Stack.Screen name="Welcome" component={WelcomeScreen} />
+        <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+        <Stack.Screen name="RoleSelection" component={RoleScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

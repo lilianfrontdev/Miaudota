@@ -159,17 +159,18 @@ export function OnboardingScreen({ navigation }: Props) {
           </XStack>
 
           <Pressable
-            disabled
             accessibilityRole="button"
-            accessibilityState={{ disabled: true }}
-            style={{
+            accessibilityLabel="Continuar para escolha de perfil"
+            onPress={() => navigation.navigate("RoleSelection")}
+            style={({ pressed }) => ({
               width: "100%",
               height: compact ? 48 : 56,
               borderRadius: 30,
               backgroundColor: theme.primary.val,
               justifyContent: "center",
               alignItems: "center",
-            }}
+              opacity: pressed ? 0.8 : 1,
+            })}
           >
             <Text
               fontSize={20}
@@ -192,15 +193,16 @@ export function OnboardingScreen({ navigation }: Props) {
           </Pressable>
 
           <Pressable
-            disabled
             accessibilityRole="button"
-            accessibilityState={{ disabled: true }}
-            style={{
+            accessibilityLabel="Pular apresentação"
+            onPress={() => navigation.navigate("RoleSelection")}
+            style={({ pressed }) => ({
               minHeight: 36,
               justifyContent: "center",
-            }}
+              opacity: pressed ? 0.6 : 1,
+            })}
           >
-            <Text fontSize={16} lineHeight="24px" color="primary">
+            <Text fontSize={18} lineHeight="24px" color="primary">
               Pular
             </Text>
           </Pressable>
