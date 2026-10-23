@@ -160,8 +160,8 @@ export function OnboardingScreen({ navigation }: Props) {
 
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel="Continuar para escolha de perfil"
-            onPress={() => navigation.navigate("RoleSelection")}
+            accessibilityLabel="Continuar para página 2 de 3"
+            onPress={() => navigation.navigate('OnboardingDiscover')}
             style={({ pressed }) => ({
               width: "100%",
               height: compact ? 48 : 56,
@@ -194,7 +194,7 @@ export function OnboardingScreen({ navigation }: Props) {
 
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel="Pular apresentação"
+            accessibilityLabel="Página 1 de 3, pular para escolha de perfil"
             onPress={() => navigation.navigate("RoleSelection")}
             style={({ pressed }) => ({
               minHeight: 36,
