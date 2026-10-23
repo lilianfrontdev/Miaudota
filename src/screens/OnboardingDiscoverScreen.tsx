@@ -156,7 +156,7 @@ export function OnboardingDiscoverScreen({ navigation }: Props) {
 
             <Pressable
               accessibilityRole="button"
-              onPress={() => navigation.navigate("RoleSelection")}
+              onPress={() => navigation.navigate("OnboardingSupport")}
               style={({ pressed }) => ({
                 width: "100%",
                 height: compact ? 48 : 56,
