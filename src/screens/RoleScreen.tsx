@@ -175,6 +175,23 @@ export function RoleScreen({ navigation }: Props) {
                 </Text>
               </Pressable>
             ))}
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Entrar com uma conta existente"
+              onPress={() => navigation.navigate("Login")}
+              style={({ pressed }) => ({
+                minHeight: 36,
+                justifyContent: "center",
+                opacity: pressed ? 0.6 : 1,
+              })}
+            >
+              <Text fontSize={14} lineHeight="24px" color="color">
+                Já tem uma conta? {"\n"}
+              </Text>
+              <Text fontSize={16} lineHeight="24px" color="primary" fontWeight="700">
+                Entrar
+              </Text>
+            </Pressable>
           </YStack>
         </YStack>
       </YStack>

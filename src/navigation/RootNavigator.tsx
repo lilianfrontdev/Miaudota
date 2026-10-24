@@ -7,6 +7,7 @@ import type { RootStackParamList } from "./types";
 import { RoleScreen } from "../screens/RoleScreen";
 import { OnboardingDiscoverScreen } from "../screens/OnboardingDiscoverScreen";
 import { OnboardingSupportScreen } from "../screens/OnboardingSupportScreen";
+import { LoginScreen } from "../screens/LoginScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -27,6 +28,7 @@ export function RootNavigator() {
         <Stack.Screen name="OnboardingDiscover"component={OnboardingDiscoverScreen} />
         <Stack.Screen name="OnboardingSupport" component={OnboardingSupportScreen} />
         <Stack.Screen name="RoleSelection" component={RoleScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
