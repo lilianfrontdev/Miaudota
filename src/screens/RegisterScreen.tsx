@@ -323,7 +323,7 @@ export function RegisterScreen({ navigation }: Props) {
 
             <Pressable
               accessibilityRole="button"
-              onPress={handleRegister}
+              onPress={() => navigation.navigate("Home")}
               style={({ pressed }) => ({
                 height: compact ? 50 : 56,
                 flexShrink: 0,

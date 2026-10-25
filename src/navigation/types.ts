@@ -6,4 +6,5 @@ export type RootStackParamList = {
   RoleSelection: undefined;
   Login: undefined;
   Register: undefined;
+  Home: undefined;
 };

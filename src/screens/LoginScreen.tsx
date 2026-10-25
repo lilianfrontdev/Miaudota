@@ -256,7 +256,7 @@ export function LoginScreen({ navigation }: Props) {
 
             <Pressable
               accessibilityRole="button"
-              onPress={handleLogin}
+              onPress={() => navigation.navigate("Home")}
               style={({ pressed }) => ({
                 marginTop: 16,
                 height: 56,
