@@ -11,6 +11,11 @@ import { Text, XStack, YStack, useTheme } from "tamagui";
 
 import { DecorativeShape } from "../components/DecorativeShape";
 import { useScreenLayout } from "../hooks/useScreenLayout";
+import CatFilterSheet, {
+  ALL_LOCATIONS,
+  EMPTY_FILTERS,
+  type CatFilters,
+} from "../components/CatFilterSheet";
 
 type Cat = {
   id: string;
@@ -72,6 +77,36 @@ const cats: Cat[] = [
   },
 ];
 
+const LOCATION_OPTIONS = Array.from(
+  new Set(cats.map((cat) => cat.location)),
+).sort((a, b) => a.localeCompare(b, "pt-BR"));
+
+// Converte textos como "4 meses" ou "2 anos" em número de meses
+function getAgeInMonths(age: string): number | null {
+  const value = parseInt(age, 10);
+
+  if (Number.isNaN(value)) {
+    return null;
+  }
+
+  const text = age.toLocaleLowerCase("pt-BR");
+
+  if (text.includes("mes")) return value;
+  if (text.includes("ano")) return value * 12;
+
+  return null;
+}
+
+// Classifica o gato na mesma nomenclatura dos chips do filtro
+function getAgeGroup(age: string): "Filhotes" | "Jovens" | "Adultos" | null {
+  const months = getAgeInMonths(age);
+
+  if (months === null) return null;
+  if (months < 12) return "Filhotes"; // menos de 1 ano
+  if (months < 24) return "Jovens"; // 1 ano
+  return "Adultos"; // 2 anos ou mais
+}
+
 export function HomeScreen() {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
@@ -80,6 +115,11 @@ export function HomeScreen() {
   const [search, setSearch] = useState("");
   const [favorites, setFavorites] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState<"home" | "favorites">("home");
+
+  const [filtersVisible, setFiltersVisible] = useState(false);
+
+  const [appliedFilters, setAppliedFilters] =
+    useState<CatFilters>(EMPTY_FILTERS);
 
   const cardWidth = (screenWidth - 48 - 12) / 2;
 
@@ -94,9 +134,22 @@ export function HomeScreen() {
 
       const matchesTab = activeTab === "home" || favorites.includes(cat.id);
 
-      return matchesSearch && matchesTab;
+      const matchesAge =
+        appliedFilters.age === "Todos" ||
+        getAgeGroup(cat.age) === appliedFilters.age;
+
+      const matchesSex =
+        appliedFilters.sex === "Todos" || cat.sex === appliedFilters.sex;
+
+      const matchesLocation =
+      appliedFilters.location === ALL_LOCATIONS ||
+      cat.location === appliedFilters.location;
+
+      return (
+        matchesSearch && matchesTab && matchesAge && matchesSex && matchesLocation
+      );
     });
-  }, [search, favorites, activeTab]);
+  }, [search, favorites, activeTab, appliedFilters]);
 
   function toggleFavorite(id: string) {
     setFavorites((current) =>
@@ -161,61 +214,82 @@ export function HomeScreen() {
                   novo melhor amigo hoje?
                 </Text>
               </YStack>
-
-              <XStack
-                height={48}
-                paddingHorizontal={14}
-                borderRadius={16}
-                backgroundColor="surface"
-                borderWidth={1}
-                borderColor="#D1D1D1"
-                alignItems="center"
-                gap={8}
-              >
-                <Text
-                  fontSize={22}
-                  lineHeight="28px"
-                  color="primary"
-                  accessible={false}
+              <XStack marginTop={8} alignItems="center" gap={10}>
+                <XStack
+                  flex={1}
+                  height={48}
+                  paddingHorizontal={14}
+                  borderRadius={16}
+                  backgroundColor="surface"
+                  borderWidth={1}
+                  borderColor="#D1D1D1"
+                  alignItems="center"
+                  gap={8}
                 >
-                  ⌕
-                </Text>
-
-                <TextInput
-                  accessibilityLabel="Buscar gatos por nome ou localização"
-                  placeholder="Buscar gatos, localização..."
-                  placeholderTextColor={theme.color.val}
-                  value={search}
-                  onChangeText={setSearch}
-                  autoCorrect={false}
-                  returnKeyType="search"
-                  style={{
-                    flex: 1,
-                    minWidth: 0,
-                    height: 46,
-                    fontSize: 14,
-                    color: theme.color.val,
-                  }}
-                />
-
-                {search ? (
-                  <Pressable
-                    accessibilityRole="button"
-                    accessibilityLabel="Limpar busca"
-                    onPress={() => setSearch("")}
-                    hitSlop={8}
-                    style={{
-                      width: 32,
-                      height: 40,
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
+                  <Text
+                    fontSize={22}
+                    lineHeight="28px"
+                    color="primary"
+                    accessible={false}
                   >
-                    <Text fontSize={22} lineHeight="28px" color="primary">
-                      ×
-                    </Text>
-                  </Pressable>
-                ) : null}
+                    ⌕
+                  </Text>
+
+                  <TextInput
+                    accessibilityLabel="Buscar gatos por nome ou localização"
+                    placeholder="Buscar gatos, localização..."
+                    placeholderTextColor={theme.color.val}
+                    value={search}
+                    onChangeText={setSearch}
+                    autoCorrect={false}
+                    returnKeyType="search"
+                    style={{
+                      flex: 1,
+                      minWidth: 0,
+                      height: 46,
+                      fontSize: 14,
+                      color: theme.color.val,
+                    }}
+                  />
+
+                  {search ? (
+                    <Pressable
+                      accessibilityRole="button"
+                      accessibilityLabel="Limpar busca"
+                      onPress={() => setSearch("")}
+                      hitSlop={8}
+                      style={{
+                        width: 32,
+                        height: 40,
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text fontSize={22} lineHeight="28px" color="primary">
+                        ×
+                      </Text>
+                    </Pressable>
+                  ) : null}
+                </XStack>
+
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel="Abrir filtros de gatos"
+                  onPress={() => setFiltersVisible(true)}
+                  style={({ pressed }) => ({
+                    width: 48,
+                    height: 48,
+                    borderRadius: 14,
+                    backgroundColor: theme.primary.val,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    opacity: pressed ? 0.75 : 1,
+                  })}
+                >
+                  <Text fontSize={23} lineHeight="28px" color="background">
+                    ☷
+                  </Text>
+                </Pressable>
               </XStack>
 
               <XStack
@@ -323,7 +397,7 @@ export function HomeScreen() {
               >
                 {activeTab === "favorites"
                   ? "Toque no coração dos cards para salvar seus favoritos."
-                  : "Experimente buscar outro nome ou cidade."}
+                  : "Experimente buscar outro nome ou ajustar os filtros."}
               </Text>
             </YStack>
           }
@@ -486,6 +560,17 @@ export function HomeScreen() {
             );
           })}
         </XStack>
+
+        <CatFilterSheet
+          visible={filtersVisible}
+          initialFilters={appliedFilters}
+          locationOptions={LOCATION_OPTIONS}
+          onClose={() => setFiltersVisible(false)}
+          onApply={(filters) => {
+            setAppliedFilters(filters);
+            setFiltersVisible(false);
+          }}
+        />
       </YStack>
     </YStack>
   );
