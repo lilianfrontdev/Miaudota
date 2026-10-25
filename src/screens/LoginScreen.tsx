@@ -343,7 +343,7 @@ export function LoginScreen({ navigation }: Props) {
 
               <Pressable
                 accessibilityRole="button"
-                onPress={() => navigation.navigate("RoleSelection")}
+                onPress={() => navigation.navigate("Register")}
                 style={({ pressed }) => ({
                   minHeight: 44,
                   justifyContent: "center",

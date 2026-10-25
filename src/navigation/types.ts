@@ -5,4 +5,5 @@ export type RootStackParamList = {
   OnboardingSupport: undefined;
   RoleSelection: undefined;
   Login: undefined;
+  Register: undefined;
 };
