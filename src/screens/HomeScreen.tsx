@@ -6,6 +6,8 @@ import {
   TextInput,
   type ImageSourcePropType,
 } from "react-native";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { RootStackParamList } from "../navigation/types";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Text, XStack, YStack, useTheme } from "tamagui";
 
@@ -25,6 +27,8 @@ type Cat = {
   location: string;
   image: ImageSourcePropType;
 };
+
+type Props = NativeStackScreenProps<RootStackParamList, "Home">;
 
 const cats: Cat[] = [
   {
@@ -108,6 +112,7 @@ function getAgeGroup(age: string): "Filhotes" | "Jovens" | "Adultos" | null {
 }
 
 export function HomeScreen() {
+export function HomeScreen({ navigation }: Props) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const { screenWidth } = useScreenLayout();
@@ -513,7 +518,10 @@ export function HomeScreen() {
             { id: "profile", label: "Perfil", icon: "○" },
           ].map((tab) => {
             const selected = activeTab === tab.id;
-            const enabled = tab.id === "home" || tab.id === "favorites";
+            const enabled =
+              tab.id === "home" ||
+              tab.id === "favorites" ||
+              tab.id === "profile";
 
             return (
               <Pressable
@@ -528,6 +536,11 @@ export function HomeScreen() {
                 }}
                 disabled={!enabled}
                 onPress={() => {
+                  if (tab.id === "profile") {
+                    navigation.navigate("OrganizationDetails");
+                    return;
+                  }
+
                   if (tab.id === "home" || tab.id === "favorites") {
                     setActiveTab(tab.id);
                   }

@@ -10,6 +10,7 @@ import { OnboardingSupportScreen } from "../screens/OnboardingSupportScreen";
 import { LoginScreen } from "../screens/LoginScreen";
 import { RegisterScreen } from "../screens/RegisterScreen";
 import { HomeScreen } from "../screens/HomeScreen";
+import { OrganizationDetailsScreen } from "../screens/OrganizationDetailsScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -33,6 +34,7 @@ export function RootNavigator() {
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="OrganizationDetails"component={OrganizationDetailsScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
