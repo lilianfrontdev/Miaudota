@@ -37,7 +37,7 @@ const cats: Cat[] = [
     sex: "Fêmea",
     age: "4 meses",
     location: "Caxias do Sul · RS",
-    image: require("../assets/boo.png"),
+    image: require("../assets/luna.jpg"),
   },
   {
     id: "2",
@@ -45,7 +45,7 @@ const cats: Cat[] = [
     sex: "Macho",
     age: "1 ano",
     location: "Caxias do Sul · RS",
-    image: require("../assets/boo2.png"),
+    image: require("../assets/nino.jpg"),
   },
   {
     id: "3",
@@ -53,7 +53,7 @@ const cats: Cat[] = [
     sex: "Fêmea",
     age: "2 anos",
     location: "Farroupilha · RS",
-    image: require("../assets/boo.png"),
+    image: require("../assets/amora.jpg"),
   },
   {
     id: "4",
@@ -61,7 +61,7 @@ const cats: Cat[] = [
     sex: "Macho",
     age: "8 meses",
     location: "Caxias do Sul · RS",
-    image: require("../assets/boo2.png"),
+    image: require("../assets/simba.jpg"),
   },
   {
     id: "5",
@@ -69,7 +69,7 @@ const cats: Cat[] = [
     sex: "Fêmea",
     age: "1 ano",
     location: "Bento Gonçalves · RS",
-    image: require("../assets/boo.png"),
+    image: require("../assets/mel.jpg"),
   },
   {
     id: "6",
@@ -77,7 +77,7 @@ const cats: Cat[] = [
     sex: "Macho",
     age: "6 meses",
     location: "Caxias do Sul · RS",
-    image: require("../assets/boo2.png"),
+    image: require("../assets/theo.jpg"),
   },
 ];
 
@@ -111,7 +111,6 @@ function getAgeGroup(age: string): "Filhotes" | "Jovens" | "Adultos" | null {
   return "Adultos"; // 2 anos ou mais
 }
 
-export function HomeScreen() {
 export function HomeScreen({ navigation }: Props) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
