@@ -11,6 +11,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Text, XStack, YStack, useTheme } from "tamagui";
 
 import { cats } from "../data/cats";
+import { useFavorites } from "../contexts/FavoritesContext";
 import { DecorativeShape } from "../components/DecorativeShape";
 import { useScreenLayout } from "../hooks/useScreenLayout";
 import CatFilterSheet, {
@@ -57,7 +58,7 @@ export function HomeScreen({ navigation }: Props) {
   const { screenWidth } = useScreenLayout();
 
   const [search, setSearch] = useState("");
-  const [favorites, setFavorites] = useState<string[]>([]);
+  const { favorites, toggleFavorite } = useFavorites();
   const [activeTab, setActiveTab] = useState<"home" | "favorites">("home");
 
   const [filtersVisible, setFiltersVisible] = useState(false);
@@ -95,13 +96,6 @@ export function HomeScreen({ navigation }: Props) {
     });
   }, [search, favorites, activeTab, appliedFilters]);
 
-  function toggleFavorite(id: string) {
-    setFavorites((current) =>
-      current.includes(id)
-        ? current.filter((favoriteId) => favoriteId !== id)
-        : [...current, id],
-    );
-  }
 
   return (
     <YStack flex={1} alignItems="center" backgroundColor="background">

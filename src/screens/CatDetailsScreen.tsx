@@ -13,6 +13,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Text, XStack, YStack, useTheme } from "tamagui";
+import { useFavorites } from "../contexts/FavoritesContext";
 
 import { DecorativeShape } from "../components/DecorativeShape";
 import { useScreenLayout } from "../hooks/useScreenLayout";
@@ -89,8 +90,9 @@ export function CatDetailsScreen({ navigation, route }: Props) {
   const cat = cats.find((item) => item.id === route.params.catId);
 
   const [photoIndex, setPhotoIndex] = useState(0);
-  const [isFavorite, setIsFavorite] = useState(false);
   const photosRef = useRef<FlatList<ImageSourcePropType>>(null);
+  const { isFavorite: checkFavorite, toggleFavorite } = useFavorites();
+  const isFavorite = checkFavorite(route.params.catId);
 
   if (!cat) {
     return (
@@ -565,7 +567,7 @@ export function CatDetailsScreen({ navigation, route }: Props) {
                   ? `Remover ${cat.name} dos favoritos`
                   : `Adicionar ${cat.name} aos favoritos`
               }
-              onPress={() => setIsFavorite((value) => !value)}
+              onPress={() => toggleFavorite(cat.id)}
             >
               <Text fontSize={22} lineHeight="26px" color="primary">
                 {isFavorite ? "♥" : "♡"}
