@@ -146,11 +146,15 @@ export function HomeScreen({ navigation }: Props) {
         appliedFilters.sex === "Todos" || cat.sex === appliedFilters.sex;
 
       const matchesLocation =
-      appliedFilters.location === ALL_LOCATIONS ||
-      cat.location === appliedFilters.location;
+        appliedFilters.location === ALL_LOCATIONS ||
+        cat.location === appliedFilters.location;
 
       return (
-        matchesSearch && matchesTab && matchesAge && matchesSex && matchesLocation
+        matchesSearch &&
+        matchesTab &&
+        matchesAge &&
+        matchesSex &&
+        matchesLocation
       );
     });
   }, [search, favorites, activeTab, appliedFilters]);
@@ -511,7 +515,6 @@ export function HomeScreen({ navigation }: Props) {
         >
           {[
             { id: "home", label: "Início", icon: "⌂" },
-            { id: "search", label: "Buscar", icon: "⌕" },
             { id: "favorites", label: "Favoritos", icon: "♡" },
             { id: "messages", label: "Mensagens", icon: "☏" },
             { id: "profile", label: "Perfil", icon: "○" },
@@ -520,7 +523,8 @@ export function HomeScreen({ navigation }: Props) {
             const enabled =
               tab.id === "home" ||
               tab.id === "favorites" ||
-              tab.id === "profile";
+              tab.id === "profile" ||
+              tab.id === "messages";
 
             return (
               <Pressable
@@ -535,6 +539,11 @@ export function HomeScreen({ navigation }: Props) {
                 }}
                 disabled={!enabled}
                 onPress={() => {
+                  if (tab.id === "messages") {
+                    navigation.navigate("Chat");
+                    return;
+                  }
+
                   if (tab.id === "profile") {
                     navigation.navigate("OrganizationDetails");
                     return;
