@@ -9,4 +9,5 @@ export type RootStackParamList = {
   Home: undefined;
   OrganizationDetails: undefined;
   CatDetails: { catId: string };
+  Chat: undefined;
 };
