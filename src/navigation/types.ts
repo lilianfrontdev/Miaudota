@@ -8,4 +8,5 @@ export type RootStackParamList = {
   Register: undefined;
   Home: undefined;
   OrganizationDetails: undefined;
+  CatDetails: { catId: string };
 };

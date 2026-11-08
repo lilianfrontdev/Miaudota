@@ -213,7 +213,7 @@ export function OrganizationDetailsScreen({ navigation }: Props) {
               </Pressable>
             </XStack>
 
-            <XStack accessibilityRole="tablist" paddingHorizontal={12}>
+            <XStack /*accessibilityRole="tablist"*/ paddingHorizontal={12}>
               {tabs.map((tab) => {
                 const selected = activeTab === tab.id;
 

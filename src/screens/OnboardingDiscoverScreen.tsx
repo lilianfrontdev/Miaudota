@@ -140,8 +140,8 @@ export function OnboardingDiscoverScreen({ navigation }: Props) {
             <XStack
               gap={8}
               justifyContent="center"
-              accessible
-              accessibilityLabel="Página 2 de 3"
+              /*accessible
+              accessibilityLabel="Página 2 de 3"*/
             >
               {[0, 1, 2].map((index) => (
                 <YStack

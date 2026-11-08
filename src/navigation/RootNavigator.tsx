@@ -11,6 +11,7 @@ import { LoginScreen } from "../screens/LoginScreen";
 import { RegisterScreen } from "../screens/RegisterScreen";
 import { HomeScreen } from "../screens/HomeScreen";
 import { OrganizationDetailsScreen } from "../screens/OrganizationDetailsScreen";
+import { CatDetailsScreen } from "../screens/CatDetailsScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -35,6 +36,7 @@ export function RootNavigator() {
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="OrganizationDetails"component={OrganizationDetailsScreen}/>
+        <Stack.Screen name="CatDetails" component={CatDetailsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
