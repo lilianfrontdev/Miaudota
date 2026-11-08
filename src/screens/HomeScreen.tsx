@@ -4,13 +4,14 @@ import {
   Image,
   Pressable,
   TextInput,
-  type ImageSourcePropType,
 } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { RootStackParamList } from "../navigation/types";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Text, XStack, YStack, useTheme } from "tamagui";
 
+import { cats } from "../data/cats";
+import { useFavorites } from "../contexts/FavoritesContext";
 import { DecorativeShape } from "../components/DecorativeShape";
 import { useScreenLayout } from "../hooks/useScreenLayout";
 import CatFilterSheet, {
@@ -19,67 +20,7 @@ import CatFilterSheet, {
   type CatFilters,
 } from "../components/CatFilterSheet";
 
-type Cat = {
-  id: string;
-  name: string;
-  sex: string;
-  age: string;
-  location: string;
-  image: ImageSourcePropType;
-};
-
 type Props = NativeStackScreenProps<RootStackParamList, "Home">;
-
-const cats: Cat[] = [
-  {
-    id: "1",
-    name: "Luna",
-    sex: "Fêmea",
-    age: "4 meses",
-    location: "Caxias do Sul · RS",
-    image: require("../assets/luna.jpg"),
-  },
-  {
-    id: "2",
-    name: "Nino",
-    sex: "Macho",
-    age: "1 ano",
-    location: "Caxias do Sul · RS",
-    image: require("../assets/nino.jpg"),
-  },
-  {
-    id: "3",
-    name: "Amora",
-    sex: "Fêmea",
-    age: "2 anos",
-    location: "Farroupilha · RS",
-    image: require("../assets/amora.jpg"),
-  },
-  {
-    id: "4",
-    name: "Simba",
-    sex: "Macho",
-    age: "8 meses",
-    location: "Caxias do Sul · RS",
-    image: require("../assets/simba.jpg"),
-  },
-  {
-    id: "5",
-    name: "Mel",
-    sex: "Fêmea",
-    age: "1 ano",
-    location: "Bento Gonçalves · RS",
-    image: require("../assets/mel.jpg"),
-  },
-  {
-    id: "6",
-    name: "Theo",
-    sex: "Macho",
-    age: "6 meses",
-    location: "Caxias do Sul · RS",
-    image: require("../assets/theo.jpg"),
-  },
-];
 
 const LOCATION_OPTIONS = Array.from(
   new Set(cats.map((cat) => cat.location)),
@@ -117,7 +58,7 @@ export function HomeScreen({ navigation }: Props) {
   const { screenWidth } = useScreenLayout();
 
   const [search, setSearch] = useState("");
-  const [favorites, setFavorites] = useState<string[]>([]);
+  const { favorites, toggleFavorite } = useFavorites();
   const [activeTab, setActiveTab] = useState<"home" | "favorites">("home");
 
   const [filtersVisible, setFiltersVisible] = useState(false);
@@ -159,13 +100,6 @@ export function HomeScreen({ navigation }: Props) {
     });
   }, [search, favorites, activeTab, appliedFilters]);
 
-  function toggleFavorite(id: string) {
-    setFavorites((current) =>
-      current.includes(id)
-        ? current.filter((favoriteId) => favoriteId !== id)
-        : [...current, id],
-    );
-  }
 
   return (
     <YStack flex={1} alignItems="center" backgroundColor="background">
@@ -413,93 +347,102 @@ export function HomeScreen({ navigation }: Props) {
             const isFavorite = favorites.includes(item.id);
 
             return (
-              <YStack
-                width={cardWidth}
-                marginBottom={14}
-                borderRadius={18}
-                backgroundColor="surface"
-                overflow="hidden"
+              <Pressable
+                accessible
+                accessibilityLabel={`Ver detalhes de ${item.name}`}
+                onPress={() => navigation.navigate("CatDetails", { catId: item.id })}
+                style={({ pressed }) => ({
+                  width: cardWidth,
+                  marginBottom: 14,
+                  opacity: pressed ? 0.9 : 1,
+                })}
               >
                 <YStack
-                  height={cardWidth * 0.85}
-                  position="relative"
-                  backgroundColor="background"
+                  borderRadius={18}
+                  backgroundColor="surface"
+                  overflow="hidden"
                 >
-                  <Image
-                    source={item.image}
-                    resizeMode="cover"
-                    accessibilityLabel={`Foto de ${item.name}`}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                    }}
-                  />
-
-                  <Pressable
-                    accessibilityRole="button"
-                    accessibilityLabel={
-                      isFavorite
-                        ? `Remover ${item.name} dos favoritos`
-                        : `Adicionar ${item.name} aos favoritos`
-                    }
-                    accessibilityState={{ selected: isFavorite }}
-                    onPress={() => toggleFavorite(item.id)}
-                    style={({ pressed }) => ({
-                      position: "absolute",
-                      top: 6,
-                      right: 6,
-                      width: 44,
-                      height: 44,
-                      borderRadius: 22,
-                      backgroundColor: theme.background.val,
-                      alignItems: "center",
-                      justifyContent: "center",
-                      opacity: pressed ? 0.7 : 1,
-                    })}
+                  <YStack
+                    height={cardWidth * 0.85}
+                    position="relative"
+                    backgroundColor="background"
                   >
-                    <Text fontSize={25} lineHeight="30px" color="primary">
-                      {isFavorite ? "♥" : "♡"}
-                    </Text>
-                  </Pressable>
-                </YStack>
+                    <Image
+                      source={item.image}
+                      resizeMode="cover"
+                      accessibilityLabel={`Foto de ${item.name}`}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                      }}
+                    />
 
-                <YStack padding={10} gap={4}>
-                  <Text
-                    fontSize={17}
-                    lineHeight="22px"
-                    fontWeight="800"
-                    color="color"
-                  >
-                    {item.name}
-                  </Text>
+                    <Pressable
+                      accessibilityRole="button"
+                      accessibilityLabel={
+                        isFavorite
+                          ? `Remover ${item.name} dos favoritos`
+                          : `Adicionar ${item.name} aos favoritos`
+                      }
+                      accessibilityState={{ selected: isFavorite }}
+                      onPress={() => toggleFavorite(item.id)}
+                      style={({ pressed }) => ({
+                        position: "absolute",
+                        top: 6,
+                        right: 6,
+                        width: 44,
+                        height: 44,
+                        borderRadius: 22,
+                        backgroundColor: theme.background.val,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        opacity: pressed ? 0.7 : 1,
+                      })}
+                    >
+                      <Text fontSize={25} lineHeight="30px" color="primary">
+                        {isFavorite ? "♥" : "♡"}
+                      </Text>
+                    </Pressable>
+                  </YStack>
 
-                  <Text fontSize={12} lineHeight="17px" color="color">
-                    {item.sex} · {item.age}
-                  </Text>
-
-                  <Text fontSize={11} lineHeight="16px" color="color">
-                    {item.location}
-                  </Text>
-
-                  <XStack
-                    marginTop={3}
-                    alignSelf="flex-start"
-                    paddingHorizontal={8}
-                    paddingVertical={3}
-                    borderRadius={10}
-                    backgroundColor="green"
-                  >
+                  <YStack padding={10} gap={4}>
                     <Text
-                      fontSize={10}
-                      lineHeight="15px"
-                      fontWeight="700"
+                      fontSize={17}
+                      lineHeight="22px"
+                      fontWeight="800"
                       color="color"
                     >
-                      Disponível
+                      {item.name}
                     </Text>
-                  </XStack>
+
+                    <Text fontSize={12} lineHeight="17px" color="color">
+                      {item.sex} · {item.age}
+                    </Text>
+
+                    <Text fontSize={11} lineHeight="16px" color="color">
+                      {item.location}
+                    </Text>
+
+                    <XStack
+                      marginTop={3}
+                      alignSelf="flex-start"
+                      paddingHorizontal={8}
+                      paddingVertical={3}
+                      borderRadius={10}
+                      backgroundColor="green"
+                    >
+                      <Text
+                        fontSize={10}
+                        lineHeight="15px"
+                        fontWeight="700"
+                        color="color"
+                      >
+                        Disponível
+                      </Text>
+                    </XStack>
+                  </YStack>
                 </YStack>
-              </YStack>
+              </Pressable>  
             );
           }}
         />

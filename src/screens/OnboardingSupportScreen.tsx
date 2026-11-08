@@ -164,8 +164,8 @@ export function OnboardingSupportScreen({ navigation }: Props) {
               gap={8}
               marginBottom={4}
               justifyContent="center"
-              accessible
-              accessibilityLabel="Página 3 de 3"
+              /*accessible
+              accessibilityLabel="Página 3 de 3"*/
             >
               {[0, 1, 2].map((index) => (
                 <YStack
