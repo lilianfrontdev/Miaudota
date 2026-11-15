@@ -22,12 +22,12 @@ import type { RootStackParamList } from "../navigation/types";
 
 type Props = NativeStackScreenProps<RootStackParamList, "CatDetails">;
 
-const CHIP_BG = "#F2E8DA"; // mesmo bege dos chips do filtro
+const CHIP_BG = "#F2E8DA"; 
 const PINK_SOFT = "#F9D6D8";
 const GREEN_SOFT = "#DCE1D2";
 const HORIZONTAL_PADDING = 22;
 
-// "Castrado" -> "Castrada", "Calmo" -> "Calma", "Brincalhão" -> "Brincalhona"
+
 function toFeminine(word: string) {
   if (word === "Brincalhão") return "Brincalhona";
   return word.endsWith("o") ? `${word.slice(0, -1)}a` : word;
@@ -141,16 +141,12 @@ export function CatDetailsScreen({ navigation, route }: Props) {
     Share.share({
       message: `Conheça ${article} ${cat!.name}, ${cat!.sex.toLowerCase()} de ${cat!.age} em ${cat!.location.replace(" · ", " - ")}. Venha adotar pelo MiauDota!`,
     }).catch(() => {
-      // Compartilhamento indisponível (ex.: navegador sem suporte)
+      
     });
   }
 
   function handleAdopt() {
-    // O formulário de interesse de adoção será ligado aqui na próxima etapa.
-    Alert.alert(
-      `Adoção ${ofArticle} ${cat!.name}`,
-      "Em breve você poderá iniciar o processo de adoção por aqui.",
-    );
+    navigation.navigate("AdoptionForm", { catId: cat!.id });
   }
 
   return (
@@ -543,7 +539,6 @@ export function CatDetailsScreen({ navigation, route }: Props) {
           </YStack>
         </ScrollView>
 
-        {/* Botões sobre a foto (ficam fixos enquanto a tela rola) */}
         <XStack
           position="absolute"
           top={insets.top + 8}
